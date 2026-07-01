@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Marin Circuit stage graphic">
+  <rect width="900" height="1125" fill="#090a0c"/>
+  <path d="M0 905 900 610v515H0z" fill="#17191e"/>
+  <path d="M90 130h220l-90 865H0z" fill="#ff4f2e"/>
+  <path d="M820 0 390 1125H255L685 0z" fill="#50f2c4"/>
+  <circle cx="566" cy="452" r="190" fill="#fff8e8"/>
+  <path d="M392 452c85-112 238-113 350 0-42 112-112 168-210 168-68 0-115-56-140-168z" fill="#090a0c"/>
+  <path d="M260 782c178-132 355-132 532 0" fill="none" stroke="#fff8e8" stroke-width="28"/>
+  <path d="M178 910h520" stroke="#ff4f2e" stroke-width="18" stroke-dasharray="32 24"/>
+</svg>

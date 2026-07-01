@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Southbank Drift city and brass graphic">
+  <rect width="900" height="1125" fill="#10120f"/>
+  <path d="M0 805h900v320H0z" fill="#1c211b"/>
+  <path d="M90 210h115v595H90zm180-85h115v680H270zm180 175h115v505H450zm180-130h115v635H630z" fill="#f2c84b"/>
+  <circle cx="452" cy="540" r="212" fill="#7fc6ff"/>
+  <path d="M170 682c150-134 414-134 564 0v98H170z" fill="#10120f"/>
+  <path d="M230 460c120-68 318-68 438 0" fill="none" stroke="#f7f0dd" stroke-width="28"/>
+  <path d="M236 895h428" stroke="#f7f0dd" stroke-width="16" stroke-dasharray="22 20"/>
+</svg>
