@@ -1,0 +1,93 @@
+---
+/**
+ * PressKit — the EPK block a booker or journalist actually needs.
+ *
+ * A short summary, pull-quotes from press, a few headline stats, downloadable
+ * assets (bio PDF, photos, rider), and press contacts — arranged so the most
+ * quotable material sits up top.
+ */
+import type { PressKit } from '../../lib/music';
+
+type Props = PressKit & { class?: string };
+
+const { summary, quotes, stats, downloads, contact, class: className = '' } = Astro.props;
+---
+
+<div class={`grid gap-8 lg:grid-cols-[1.3fr_1fr] ${className}`}>
+  <div class="space-y-8">
+    <p class="text-bone text-lg leading-relaxed text-pretty">{summary}</p>
+
+    {
+      quotes && quotes.length > 0 && (
+        <ul class="space-y-5">
+          {quotes.map((q) => (
+            <li class="border-signal/40 border-l-2 pl-4">
+              <p class="font-display text-bone text-lg leading-snug font-light italic">
+                “{q.quote}”
+              </p>
+              <p class="text-muted mt-1.5 text-sm tracking-wide">— {q.source}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+
+  <aside class="space-y-8">
+    {
+      stats && stats.length > 0 && (
+        <dl class="grid grid-cols-2 gap-4">
+          {stats.map((s) => (
+            <div class="bg-stage-raised rounded-xl border border-white/10 p-4">
+              <dt class="text-muted text-xs tracking-wide uppercase">{s.label}</dt>
+              <dd class="text-signal font-display mt-1 text-2xl">{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+
+    {
+      downloads && downloads.length > 0 && (
+        <div>
+          <p class="text-muted mb-3 text-xs tracking-[0.15em] uppercase">Press assets</p>
+          <ul class="divide-y divide-white/10 border-y border-white/10">
+            {downloads.map((d) => (
+              <li>
+                <a
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="group flex items-center justify-between gap-3 py-3"
+                >
+                  <span class="text-bone group-hover:text-signal text-sm transition-colors">
+                    {d.label}
+                  </span>
+                  <span class="text-muted shrink-0 text-xs">{d.meta ?? 'Download ↓'}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      contact && contact.length > 0 && (
+        <div>
+          <p class="text-muted mb-3 text-xs tracking-[0.15em] uppercase">Contact</p>
+          <ul class="space-y-2">
+            {contact.map((c) => (
+              <li class="flex items-baseline justify-between gap-3 text-sm">
+                <span class="text-muted">{c.label}</span>
+                <a href={`mailto:${c.email}`} class="text-bone hover:text-signal transition-colors">
+                  {c.email}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </aside>
+</div>

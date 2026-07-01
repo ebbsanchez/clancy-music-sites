@@ -37,6 +37,10 @@ npm run dev        # http://localhost:4321
 
 Base path is injected at build time via `PUBLIC_BASE_PATH` so production and preview asset URLs both resolve correctly.
 
+## AI-editing architecture
+
+Backend research and the recommended MVP path live in [`docs/backend-ai-editing-architecture.md`](docs/backend-ai-editing-architecture.md): keep public sites static and file-backed, add a thin authenticated Anthropic edit service, validate structured content, and publish through GitHub PR previews.
+
 ## Project structure
 
 ```

@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import Equalizer from '../../components/Equalizer.astro';
+import { demoSites } from '../../lib/demoPack';
+import { demoPackB } from '../../lib/demoPackB';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Demo Packs — Clancy"
+  description="Distinctive musician website references across multiple genres and art directions."
+>
+  <main class="min-h-screen">
+    <header class="mx-auto max-w-6xl px-6 pt-16 pb-10 sm:px-10 sm:pt-24">
+      <p class="text-signal mb-6 flex items-center gap-3 text-sm tracking-wide">
+        <Equalizer bars={4} class="h-4" />
+        Demo Packs
+      </p>
+      <h1 class="font-display text-6xl leading-[0.9] font-light text-balance sm:text-8xl">
+        Musician sites with actual art direction.
+      </h1>
+      <p class="text-muted mt-6 max-w-2xl text-lg leading-relaxed">
+        Pack A covers liquid glass, anime maximalist, and punk zine. Pack B adds jazz fusion, UK
+        modern jazz, and warm keys. Each route reuses the same music-site components with
+        genre-specific visual systems layered on top.
+      </p>
+    </header>
+
+    <section class="mx-auto max-w-6xl px-6 pb-12 sm:px-10">
+      <p class="text-signal mb-4 text-sm tracking-[0.16em] uppercase">Pack A</p>
+      <div class="grid gap-5 lg:grid-cols-3">
+        {
+          demoSites.map((site) => (
+            <a
+              href={`${base}/demos/${site.slug}`}
+              class="group bg-stage-raised hover:border-signal/60 block overflow-hidden rounded-lg border border-white/10 no-underline transition duration-300 hover:-translate-y-1"
+            >
+              <img
+                src={site.heroImage}
+                alt={`${site.name} demo preview`}
+                class="aspect-[4/3] w-full object-cover"
+              />
+              <div class="p-5">
+                <p class="text-signal text-xs tracking-[0.16em] uppercase">{site.title}</p>
+                <h2 class="font-display text-bone mt-3 text-3xl font-light">{site.name}</h2>
+                <p class="text-muted mt-3 text-sm leading-relaxed">{site.scene}</p>
+                <span class="text-signal mt-5 inline-block text-sm font-bold">
+                  Open demo {'->'}
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-6 pb-20 sm:px-10">
+      <p class="text-signal mb-4 text-sm tracking-[0.16em] uppercase">Pack B</p>
+      <div class="grid gap-5 lg:grid-cols-3">
+        {
+          demoPackB.map((artist) => (
+            <a
+              href={`${base}/demos/${artist.slug}`}
+              class="group bg-stage-raised hover:border-signal/60 block overflow-hidden rounded-lg border border-white/10 no-underline transition duration-300 hover:-translate-y-1"
+            >
+              <img
+                src={artist.heroImage.src}
+                alt={artist.heroImage.alt}
+                class="aspect-[4/3] w-full object-cover"
+              />
+              <div class="p-5">
+                <p class="text-signal text-xs tracking-[0.16em] uppercase">{artist.genre}</p>
+                <h2 class="font-display text-bone mt-3 text-3xl font-light">{artist.name}</h2>
+                <p class="text-muted mt-3 text-sm leading-relaxed">{artist.intro}</p>
+                <span class="text-signal mt-5 inline-block text-sm font-bold">
+                  Open demo {'->'}
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</Base>

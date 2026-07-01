@@ -1,0 +1,44 @@
+---
+/**
+ * LinkHub — a "link-in-bio" stack of full-width buttons.
+ *
+ * The one thing an artist shares everywhere. Big tap targets, optional
+ * sub-notes ("New single"), and an animated arrow on hover. Works as a
+ * standalone page or a section within a full site.
+ */
+import type { LinkItem } from '../../lib/music';
+
+interface Props {
+  links: LinkItem[];
+  class?: string;
+}
+
+const { links, class: className = '' } = Astro.props;
+---
+
+<ul class={`mx-auto flex max-w-md flex-col gap-3 ${className}`}>
+  {
+    links.map((l) => (
+      <li>
+        <a
+          href={l.url}
+          target="_blank"
+          rel="noopener"
+          class="group hover:border-signal hover:bg-signal hover:text-stage bg-stage-raised flex items-center justify-between gap-4 rounded-full border border-white/12 px-6 py-4 transition-colors"
+        >
+          <span class="min-w-0">
+            <span class="block truncate font-medium">{l.label}</span>
+            {l.note && (
+              <span class="text-muted group-hover:text-stage/70 block truncate text-xs">
+                {l.note}
+              </span>
+            )}
+          </span>
+          <span class="shrink-0 transition-transform duration-300 group-hover:translate-x-1">
+            →
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

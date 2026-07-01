@@ -1,0 +1,74 @@
+---
+/**
+ * TourDates — a list of shows with venue, city, and a ticket CTA.
+ *
+ * Dates are formatted from the ISO string at build time (no client JS). Past
+ * shows are hidden by default; sold-out shows keep their row but swap the CTA
+ * for a muted "Sold out" tag.
+ */
+import type { Show } from '../../lib/music';
+
+interface Props {
+  shows: Show[];
+  /** Show dates on/after this ISO date. Defaults to hiding nothing. */
+  since?: string;
+  class?: string;
+}
+
+const { shows, since, class: className = '' } = Astro.props;
+
+const cutoff = since ?? '0000-00-00';
+const upcoming = shows.filter((s) => s.date >= cutoff).sort((a, b) => a.date.localeCompare(b.date));
+
+const parts = (iso: string) => {
+  const d = new Date(`${iso}T00:00:00`);
+  return {
+    day: d.toLocaleDateString('en-US', { day: '2-digit' }),
+    mon: d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
+  };
+};
+---
+
+{
+  upcoming.length === 0 ? (
+    <p class="text-muted">No shows announced right now — check back soon.</p>
+  ) : (
+    <ul class={`divide-y divide-white/10 border-y border-white/10 ${className}`}>
+      {upcoming.map((s) => {
+        const d = parts(s.date);
+        return (
+          <li class="group flex items-center gap-4 py-5 sm:gap-6">
+            <div class="flex w-12 shrink-0 flex-col items-center text-center sm:w-14">
+              <span class="text-signal font-display text-2xl leading-none sm:text-3xl">
+                {d.day}
+              </span>
+              <span class="text-muted text-[0.65rem] tracking-[0.15em]">{d.mon}</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-bone truncate font-medium">{s.city}</p>
+              <p class="text-muted truncate text-sm">{s.venue}</p>
+            </div>
+            <div class="shrink-0">
+              {s.soldOut ? (
+                <span class="text-muted rounded-full border border-white/10 px-4 py-1.5 text-xs tracking-wide line-through">
+                  Sold out
+                </span>
+              ) : s.ticketUrl ? (
+                <a
+                  href={s.ticketUrl}
+                  target="_blank"
+                  rel="noopener"
+                  class="border-signal/40 text-signal hover:bg-signal hover:text-stage inline-block rounded-full border px-4 py-1.5 text-xs font-bold tracking-wide transition-colors"
+                >
+                  Tickets
+                </a>
+              ) : (
+                <span class="text-muted text-xs">Soon</span>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

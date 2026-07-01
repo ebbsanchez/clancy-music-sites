@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Equalizer from '../components/Equalizer.astro';
+import { demoPackB } from '../lib/demoPackB';
 
 // Deploy-pipeline proof page. Deliberately opinionated — this is the taste
 // bar for the product, not a throwaway "Hello World".
@@ -15,6 +16,7 @@ const ticker = [
   'Apple Music',
 ];
 const buildStamp = new Date().toISOString().slice(0, 10);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Base>
@@ -71,7 +73,57 @@ const buildStamp = new Date().toISOString().slice(0, 10);
           Foundation live
           <span class="bg-stage inline-block h-2 w-2 animate-pulse rounded-full"></span>
         </span>
+        <a
+          href={`${base}/components`}
+          class="border-signal/40 text-signal hover:bg-signal hover:text-stage inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-bold no-underline transition-colors"
+        >
+          View component library →
+        </a>
+        <a
+          href={`${base}/demos`}
+          class="border-signal/40 text-signal hover:bg-signal hover:text-stage inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-bold no-underline transition-colors"
+        >
+          Open demo packs →
+        </a>
         <span class="text-muted text-sm">Preview pipeline online · build {buildStamp}</span>
+      </div>
+    </section>
+
+    <section class="relative z-10 mx-auto max-w-6xl px-6 py-12 sm:px-10">
+      <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-signal text-sm tracking-wide uppercase">Reference sites</p>
+          <h2 class="font-display mt-2 text-4xl leading-none font-light sm:text-6xl">
+            Demo pack B
+          </h2>
+        </div>
+        <a href={`${base}/demos`} class="text-muted hover:text-signal text-sm transition-colors">
+          View all demos →
+        </a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        {
+          demoPackB.map((artist) => (
+            <a
+              href={`${base}/demos/${artist.slug}`}
+              class="bg-stage-raised group block overflow-hidden rounded-2xl border border-white/10 no-underline transition-transform hover:-translate-y-1"
+            >
+              <img
+                src={artist.heroImage.src}
+                alt=""
+                class="aspect-[5/4] w-full object-cover"
+                loading="lazy"
+              />
+              <div class="p-5">
+                <p class="text-signal text-xs tracking-wide uppercase">{artist.genre}</p>
+                <h3 class="text-bone mt-2 text-xl font-bold">{artist.name}</h3>
+                <p class="text-muted mt-2 line-clamp-2 text-sm leading-relaxed">
+                  {artist.headline}
+                </p>
+              </div>
+            </a>
+          ))
+        }
       </div>
     </section>
 

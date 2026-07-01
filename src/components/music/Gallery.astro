@@ -1,0 +1,37 @@
+---
+/**
+ * Gallery — a masonry-style photo wall.
+ *
+ * Uses CSS columns so portrait and landscape shots pack tightly without
+ * cropping. Each photo carries its alt text and an optional credit overlay
+ * on hover. Pure CSS — no lightbox JS in v1 (keeps it fast; can layer one on).
+ */
+import type { Photo } from '../../lib/music';
+
+interface Props {
+  photos: Photo[];
+  class?: string;
+}
+
+const { photos, class: className = '' } = Astro.props;
+---
+
+<div class={`columns-2 gap-4 sm:columns-3 [&>*]:mb-4 ${className}`}>
+  {
+    photos.map((p) => (
+      <figure class="group relative overflow-hidden rounded-xl border border-white/10">
+        <img
+          src={p.src}
+          alt={p.alt}
+          loading="lazy"
+          class="w-full transition duration-500 group-hover:scale-[1.03]"
+        />
+        {p.credit && (
+          <figcaption class="text-bone bg-stage/70 absolute right-0 bottom-0 left-0 translate-y-full px-3 py-2 text-xs backdrop-blur-sm transition-transform duration-300 group-hover:translate-y-0">
+            Photo · {p.credit}
+          </figcaption>
+        )}
+      </figure>
+    ))
+  }
+</div>

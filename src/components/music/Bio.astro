@@ -1,0 +1,47 @@
+---
+/**
+ * Bio — an artist statement with an optional portrait.
+ *
+ * Two-column on desktop (portrait beside prose), stacked on mobile. The
+ * tagline is set in the display face so it reads as a pull-quote; body
+ * paragraphs stay comfortably measured for reading.
+ */
+import type { Bio } from '../../lib/music';
+
+type Props = Bio & { class?: string };
+
+const { tagline, paragraphs, portrait, class: className = '' } = Astro.props;
+---
+
+<div class={`grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14 ${className}`}>
+  {
+    portrait && (
+      <figure class="lg:order-last">
+        <div class="overflow-hidden rounded-2xl border border-white/10">
+          <img
+            src={portrait.src}
+            alt={portrait.alt}
+            loading="lazy"
+            class="aspect-[4/5] w-full object-cover"
+          />
+        </div>
+        {portrait.credit && (
+          <figcaption class="text-muted mt-2 text-xs">Photo · {portrait.credit}</figcaption>
+        )}
+      </figure>
+    )
+  }
+
+  <div class="max-w-prose">
+    {
+      tagline && (
+        <p class="font-display text-bone mb-6 text-2xl leading-snug font-light text-balance sm:text-3xl">
+          {tagline}
+        </p>
+      )
+    }
+    <div class="space-y-4">
+      {paragraphs.map((p) => <p class="text-muted leading-relaxed">{p}</p>)}
+    </div>
+  </div>
+</div>
