@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="900" viewBox="0 0 800 900">
+  <defs><linearGradient id="p5" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#14141b"/><stop offset="1" stop-color="#4be3a0" stop-opacity="0.25"/>
+  </linearGradient></defs>
+  <rect width="800" height="900" fill="url(#p5)"/>
+  <g stroke="#4be3a0" stroke-width="2" opacity="0.6" fill="none">
+    <path d="M0 630 Q 200 450, 400 585 T 800 495.00000000000006"/>
+    <path d="M0 720 Q 200 558, 400 675 T 800 594"/>
+  </g>
+  <text x="24" y="876" font-family="monospace" font-size="14" letter-spacing="2" fill="#f4f1ea" opacity="0.7">BACKSTAGE</text>
+</svg>
