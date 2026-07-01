@@ -1,0 +1,43 @@
+name: Deploy (production)
+
+# Every push to main builds the site and publishes it to the gh-pages
+# branch, which GitHub Pages serves at
+# https://ebbsanchez.github.io/clancy-music-sites/
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          PUBLIC_BASE_PATH: /clancy-music-sites
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          # Preserve the pr-preview/ directory managed by preview.yml so a
+          # production deploy never wipes a live PR preview.
+          keep_files: true

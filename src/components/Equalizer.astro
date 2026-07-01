@@ -1,0 +1,22 @@
+---
+// A small, decorative "now playing" equalizer. Purely visual; hidden from
+// assistive tech. Reusable across artist templates (hero, audio players).
+interface Props {
+  bars?: number;
+  class?: string;
+}
+const { bars = 5, class: className = '' } = Astro.props;
+// Deterministic, varied delays so the bars feel alive without JS/random.
+const delays = ['0s', '0.2s', '0.45s', '0.15s', '0.35s', '0.5s', '0.1s'];
+---
+
+<span class={`flex items-end gap-[3px] ${className}`} aria-hidden="true">
+  {
+    Array.from({ length: bars }).map((_, i) => (
+      <span
+        class="eq-bar bg-signal block w-[3px] rounded-full"
+        style={`height: 100%; animation-delay: ${delays[i % delays.length]}`}
+      />
+    ))
+  }
+</span>
