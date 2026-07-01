@@ -1,0 +1,110 @@
+---
+/**
+ * StreamingEmbed — one component, four providers.
+ *
+ * Pass a public share URL and provider; the component derives the correct
+ * embed iframe. Spotify / Apple Music / SoundCloud embeds can be built from
+ * the share URL alone. Bandcamp is the exception — its player needs the
+ * numeric album/track ids from the artist's embed dialog, so pass those via
+ * `bandcamp`.
+ *
+ * All players are lazy-loaded and framed identically so a page can mix
+ * providers without the layout jumping around.
+ */
+import type { StreamingEmbed } from '../../lib/music';
+
+type Props = StreamingEmbed & { class?: string };
+
+const { provider, url, title, bandcamp, class: className = '' } = Astro.props;
+
+const providerLabel: Record<StreamingEmbed['provider'], string> = {
+  spotify: 'Spotify',
+  'apple-music': 'Apple Music',
+  bandcamp: 'Bandcamp',
+  soundcloud: 'SoundCloud',
+};
+
+/** Build the provider-specific iframe src (or null if we can't). */
+function embedSrc(): { src: string; height: number } | null {
+  try {
+    switch (provider) {
+      case 'spotify': {
+        // open.spotify.com/<type>/<id> -> open.spotify.com/embed/<type>/<id>
+        const u = new URL(url);
+        const path = u.pathname.replace(/^\/(intl-[a-z]+\/)?/, '/');
+        return { src: `https://open.spotify.com/embed${path}?theme=0`, height: 352 };
+      }
+      case 'apple-music': {
+        // music.apple.com/... -> embed.music.apple.com/...
+        const u = new URL(url);
+        return {
+          src: `https://embed.music.apple.com${u.pathname}${u.search}`,
+          height: 175,
+        };
+      }
+      case 'soundcloud': {
+        const params = new URLSearchParams({
+          url,
+          color: 'd6ff3f',
+          auto_play: 'false',
+          hide_related: 'true',
+          show_comments: 'false',
+          show_user: 'true',
+          visual: 'false',
+        });
+        return { src: `https://w.soundcloud.com/player/?${params}`, height: 166 };
+      }
+      case 'bandcamp': {
+        const parts: string[] = [];
+        if (bandcamp?.album) parts.push(`album=${bandcamp.album}`);
+        if (bandcamp?.track) parts.push(`track=${bandcamp.track}`);
+        if (parts.length === 0) return null; // need ids from the embed dialog
+        parts.push('size=large', 'bgcol=0b0b0f', 'linkcol=d6ff3f', 'tracklist=false');
+        return {
+          src: `https://bandcamp.com/EmbeddedPlayer/${parts.join('/')}/`,
+          height: 120,
+        };
+      }
+    }
+  } catch {
+    return null;
+  }
+}
+
+const label = title ?? `Listen on ${providerLabel[provider]}`;
+const embed = embedSrc();
+---
+
+<figure class={`overflow-hidden rounded-2xl border border-white/10 bg-stage-raised ${className}`}>
+  <figcaption
+    class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-2.5 text-xs"
+  >
+    <span class="text-muted truncate">{label}</span>
+    <span class="text-signal shrink-0 font-medium tracking-wide">{providerLabel[provider]}</span>
+  </figcaption>
+
+  {
+    embed ? (
+      <iframe
+        src={embed.src}
+        title={label}
+        height={embed.height}
+        width="100%"
+        loading="lazy"
+        style={`height:${embed.height}px`}
+        allow="autoplay *; encrypted-media *; clipboard-write; fullscreen *"
+        allowtransparency={true}
+        class="block w-full"
+      />
+    ) : (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener"
+        class="text-bone hover:text-signal block px-4 py-6 text-sm underline underline-offset-4 transition-colors"
+      >
+        Open on {providerLabel[provider]} →
+      </a>
+    )
+  }
+</figure>

@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import Equalizer from '../components/Equalizer.astro';
+import Section from '../components/music/Section.astro';
+import StreamingEmbed from '../components/music/StreamingEmbed.astro';
+import Discography from '../components/music/Discography.astro';
+import TourDates from '../components/music/TourDates.astro';
+import Bio from '../components/music/Bio.astro';
+import PressKit from '../components/music/PressKit.astro';
+import Gallery from '../components/music/Gallery.astro';
+import LinkHub from '../components/music/LinkHub.astro';
+import * as vela from '../lib/demoArtist';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Living showcase of the music component library, rendered with one fictional
+// artist's content so every block shows real, composed data — not lorem.
+const nav = [
+  ['players', 'Players'],
+  ['discography', 'Discography'],
+  ['tour', 'Tour'],
+  ['bio', 'Bio'],
+  ['press', 'Press kit'],
+  ['gallery', 'Gallery'],
+  ['links', 'Link hub'],
+];
+---
+
+<Base
+  title="Component Library — Clancy"
+  description="Clancy's music-artist component library, shown with one artist's content."
+>
+  <!-- Header -->
+  <header class="mx-auto max-w-6xl px-6 pt-16 pb-8 sm:px-10 sm:pt-24">
+    <p class="text-signal mb-6 flex items-center gap-3 text-sm tracking-wide">
+      <Equalizer bars={4} class="h-4" />
+      Component library · v1
+    </p>
+    <h1
+      class="font-display text-6xl leading-[0.9] font-light tracking-[-0.03em] text-balance sm:text-8xl"
+    >
+      The music <span class="text-signal italic">building blocks.</span>
+    </h1>
+    <p class="text-muted mt-6 max-w-xl text-lg leading-relaxed">
+      Reusable, responsive, music-specific components — shown here composed into one artist's page.
+      Every block reads from plain data (<code class="text-bone">src/lib/music.ts</code>), so it's
+      trivial to reskin per artist and to edit with AI.
+    </p>
+    <nav class="mt-8 flex flex-wrap gap-2">
+      {
+        nav.map(([id, label]) => (
+          <a
+            href={`#${id}`}
+            class="text-muted hover:border-signal hover:text-signal rounded-full border border-white/10 px-4 py-1.5 text-sm transition-colors"
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+  </header>
+
+  <Section
+    id="players"
+    eyebrow="Streaming players"
+    title="Spotify · Apple Music · Bandcamp · SoundCloud"
+  >
+    <p class="text-muted mb-8 max-w-2xl">
+      One <code class="text-bone">&lt;StreamingEmbed&gt;</code> component derives the right player from
+      a share URL. Mix providers freely — every player is framed identically and lazy-loaded.
+    </p>
+    <div class="grid gap-6 lg:grid-cols-2">
+      {vela.embeds.map((e) => <StreamingEmbed {...e} />)}
+    </div>
+  </Section>
+
+  <Section id="discography" eyebrow="Releases" title="Discography">
+    <Discography releases={vela.releases} />
+  </Section>
+
+  <Section id="tour" eyebrow="Live" title="Tour dates">
+    <TourDates shows={vela.shows} since="2026-07-01" />
+  </Section>
+
+  <Section id="bio" eyebrow="About" title="Bio">
+    <Bio {...vela.bio} />
+  </Section>
+
+  <Section id="press" eyebrow="For press & bookers" title="EPK / Press kit">
+    <PressKit {...vela.pressKit} />
+  </Section>
+
+  <Section id="gallery" eyebrow="Photos" title="Gallery">
+    <Gallery photos={vela.gallery} />
+  </Section>
+
+  <Section id="links" eyebrow="Everywhere" title="Link hub">
+    <LinkHub links={vela.links} />
+  </Section>
+
+  <footer
+    class="text-muted mx-auto flex max-w-6xl flex-col gap-2 px-6 py-16 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-10"
+  >
+    <span>Clancy Website Design — music component library v1</span>
+    <a href={`${base}/`} class="hover:text-signal transition-colors">← Home</a>
+  </footer>
+</Base>

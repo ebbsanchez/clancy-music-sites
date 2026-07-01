@@ -1,0 +1,42 @@
+---
+/**
+ * Section — the shared frame every music block sits in.
+ *
+ * Gives each component a consistent eyebrow + heading rhythm and a centered,
+ * max-width column, so a page composed of many blocks reads as one design
+ * rather than a stack of widgets.
+ */
+import Equalizer from '../Equalizer.astro';
+
+interface Props {
+  /** Small accent label above the heading, e.g. "Releases". */
+  eyebrow?: string;
+  title?: string;
+  /** HTML id for in-page anchors / link hubs. */
+  id?: string;
+  class?: string;
+}
+
+const { eyebrow, title, id, class: className = '' } = Astro.props;
+---
+
+<section id={id} class={`mx-auto max-w-6xl px-6 py-16 sm:px-10 sm:py-20 ${className}`}>
+  {
+    (eyebrow || title) && (
+      <header class="mb-10">
+        {eyebrow && (
+          <p class="text-signal mb-3 flex items-center gap-3 text-sm tracking-wide">
+            <Equalizer bars={4} class="h-3.5" />
+            {eyebrow}
+          </p>
+        )}
+        {title && (
+          <h2 class="font-display text-4xl leading-[0.95] font-light tracking-[-0.02em] text-balance sm:text-5xl">
+            {title}
+          </h2>
+        )}
+      </header>
+    )
+  }
+  <slot />
+</section>
