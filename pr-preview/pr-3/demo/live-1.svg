@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs><linearGradient id="p1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#14141b"/><stop offset="1" stop-color="#ff5c7a" stop-opacity="0.25"/>
+  </linearGradient></defs>
+  <rect width="800" height="1000" fill="url(#p1)"/>
+  <g stroke="#ff5c7a" stroke-width="2" opacity="0.6" fill="none">
+    <path d="M0 700 Q 200 500, 400 650 T 800 550"/>
+    <path d="M0 800 Q 200 620, 400 750 T 800 660"/>
+  </g>
+  <text x="24" y="976" font-family="monospace" font-size="14" letter-spacing="2" fill="#f4f1ea" opacity="0.7">LIVE — RED ROCKS</text>
+</svg>
