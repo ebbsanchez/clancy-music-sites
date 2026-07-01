@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" role="img" aria-label="Elias Wren warm keys graphic">
-  <rect width="900" height="1125" fill="#14100d"/>
-  <path d="M0 715c185-102 317-124 470-70s249 28 430-74v554H0z" fill="#221a14"/>
-  <circle cx="450" cy="408" r="230" fill="#f59e5b"/>
-  <path d="M287 430c90-114 236-120 326 0-40 106-94 160-163 160s-123-54-163-160z" fill="#14100d"/>
-  <rect x="132" y="760" width="636" height="128" rx="28" fill="#fff4df"/>
-  <path d="M210 760v128m80-128v128m80-128v128m80-128v128m80-128v128m80-128v128" stroke="#14100d" stroke-width="16"/>
-  <path d="M250 760v78m160-78v78m160-78v78" stroke="#221a14" stroke-width="34"/>
-</svg>
