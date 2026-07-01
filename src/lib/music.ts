@@ -98,3 +98,32 @@ export interface LinkItem {
   /** Optional sub-label, e.g. "New single". */
   note?: string;
 }
+
+/* ---- Full artist site demos -------------------------------------------- */
+
+export interface ArtistTheme {
+  background: string;
+  surface: string;
+  text: string;
+  muted: string;
+  accent: string;
+  accentAlt: string;
+}
+
+export interface ArtistSite {
+  slug: string;
+  name: string;
+  genre: string;
+  location: string;
+  headline: string;
+  intro: string;
+  heroImage: Photo;
+  theme: ArtistTheme;
+  embeds: StreamingEmbed[];
+  releases: Release[];
+  shows: Show[];
+  bio: Bio;
+  pressKit: PressKit;
+  gallery: Photo[];
+  links: LinkItem[];
+}

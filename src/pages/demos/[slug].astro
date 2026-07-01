@@ -1,0 +1,190 @@
+---
+import Base from '../../layouts/Base.astro';
+import Equalizer from '../../components/Equalizer.astro';
+import DemoSite from '../../components/DemoSite.astro';
+import StreamingEmbed from '../../components/music/StreamingEmbed.astro';
+import Discography from '../../components/music/Discography.astro';
+import TourDates from '../../components/music/TourDates.astro';
+import Bio from '../../components/music/Bio.astro';
+import PressKit from '../../components/music/PressKit.astro';
+import Gallery from '../../components/music/Gallery.astro';
+import LinkHub from '../../components/music/LinkHub.astro';
+import { demoSites } from '../../lib/demoPack';
+import { demoPackB } from '../../lib/demoPackB';
+
+export function getStaticPaths() {
+  return [
+    ...demoSites.map((site) => ({
+      params: { slug: site.slug },
+      props: { site, artist: null },
+    })),
+    ...demoPackB.map((artist) => ({
+      params: { slug: artist.slug },
+      props: { site: null, artist },
+    })),
+  ];
+}
+
+const { artist, site } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const nav = [
+  ['music', 'Music'],
+  ['shows', 'Shows'],
+  ['story', 'Story'],
+  ['press', 'Press'],
+  ['links', 'Links'],
+];
+---
+
+{
+  site ? (
+    <Base title={`${site.name} — ${site.title}`} description={site.description}>
+      <DemoSite site={site} />
+    </Base>
+  ) : (
+    <Base
+      title={`${artist.name} — Clancy Demo`}
+      description={`${artist.name} demo musician site by Clancy Website Design.`}
+    >
+      <main
+        class="min-h-screen overflow-hidden"
+        style={`--artist-bg:${artist.theme.background}; --artist-surface:${artist.theme.surface}; --artist-text:${artist.theme.text}; --artist-muted:${artist.theme.muted}; --artist-accent:${artist.theme.accent}; --artist-accent-alt:${artist.theme.accentAlt}; background: var(--artist-bg); color: var(--artist-text);`}
+      >
+        <header class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+          <a
+            href={`${base}/demos`}
+            class="flex items-center gap-2.5 text-sm font-bold tracking-[0.18em] uppercase no-underline"
+          >
+            <Equalizer bars={3} class="h-4" />
+            Demo pack B
+          </a>
+          <nav class="hidden items-center gap-1 md:flex">
+            {nav.map(([id, label]) => (
+              <a
+                href={`#${id}`}
+                class="rounded-full px-3 py-1.5 text-sm no-underline transition-colors hover:bg-white/10"
+                style="color: var(--artist-muted);"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        </header>
+
+        <section class="mx-auto grid max-w-7xl gap-8 px-5 pt-10 pb-16 sm:px-8 lg:grid-cols-[1fr_0.78fr] lg:items-end lg:pt-16">
+          <div>
+            <p
+              class="mb-6 flex flex-wrap items-center gap-3 text-sm tracking-[0.14em] uppercase"
+              style="color: var(--artist-accent);"
+            >
+              <span>{artist.genre}</span>
+              <span style="color: var(--artist-muted);">/ {artist.location}</span>
+            </p>
+            <h1 class="font-display max-w-5xl text-6xl leading-[0.9] font-light text-balance sm:text-8xl lg:text-9xl">
+              {artist.name}
+            </h1>
+            <p class="mt-7 max-w-2xl text-xl leading-relaxed text-pretty sm:text-2xl">
+              {artist.headline}
+            </p>
+            <p class="mt-5 max-w-xl leading-relaxed" style="color: var(--artist-muted);">
+              {artist.intro}
+            </p>
+          </div>
+
+          <figure
+            class="relative overflow-hidden rounded-[2rem] border border-white/15"
+            style="background: var(--artist-surface);"
+          >
+            <img
+              src={artist.heroImage.src}
+              alt={artist.heroImage.alt}
+              class="aspect-[4/5] h-full w-full object-cover"
+            />
+            <figcaption class="absolute right-4 bottom-4 left-4 flex items-center justify-between gap-4 rounded-full border border-white/15 bg-black/35 px-4 py-2 text-xs backdrop-blur">
+              <span>{artist.heroImage.credit}</span>
+              <span style="color: var(--artist-accent);">Demo pack B</span>
+            </figcaption>
+          </figure>
+        </section>
+
+        <section
+          id="music"
+          class="border-y border-white/10 py-12"
+          style="background: color-mix(in srgb, var(--artist-surface) 68%, transparent);"
+        >
+          <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.82fr_1.18fr]">
+            <div>
+              <p
+                class="mb-3 text-sm tracking-[0.14em] uppercase"
+                style="color: var(--artist-accent);"
+              >
+                Listen first
+              </p>
+              <h2 class="font-display text-4xl leading-none font-light sm:text-6xl">
+                Records with a point of view.
+              </h2>
+            </div>
+            <div class="grid gap-5">
+              {artist.embeds.map((embed) => (
+                <StreamingEmbed {...embed} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+          <Discography releases={artist.releases} />
+        </section>
+
+        <section
+          id="shows"
+          class="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[0.6fr_1fr]"
+        >
+          <div>
+            <p
+              class="mb-3 text-sm tracking-[0.14em] uppercase"
+              style="color: var(--artist-accent);"
+            >
+              Upcoming
+            </p>
+            <h2 class="font-display text-4xl leading-none font-light sm:text-6xl">On stage.</h2>
+          </div>
+          <TourDates shows={artist.shows} since="2026-07-01" />
+        </section>
+
+        <section
+          id="story"
+          class="border-y border-white/10 py-14"
+          style="background: color-mix(in srgb, var(--artist-surface) 78%, transparent);"
+        >
+          <div class="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_0.9fr]">
+            <Bio {...artist.bio} />
+            <Gallery photos={artist.gallery} />
+          </div>
+        </section>
+
+        <section id="press" class="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+          <PressKit {...artist.pressKit} />
+        </section>
+
+        <section
+          id="links"
+          class="mx-auto grid max-w-7xl gap-10 px-5 pb-20 sm:px-8 lg:grid-cols-[0.7fr_1fr]"
+        >
+          <div>
+            <p
+              class="mb-3 text-sm tracking-[0.14em] uppercase"
+              style="color: var(--artist-accent);"
+            >
+              Next action
+            </p>
+            <h2 class="font-display text-4xl leading-none font-light sm:text-6xl">
+              Listen, book, follow.
+            </h2>
+          </div>
+          <LinkHub links={artist.links} />
+        </section>
+      </main>
+    </Base>
+  )
+}
